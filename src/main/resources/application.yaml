@@ -1,3 +1,11 @@
 spring:
-  application:
-    name: management-system
+  datasource:
+    url: jdbc:postgresql://localhost:5432/management_system
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
