@@ -9,15 +9,14 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class MedicalRecords
-{
+public class MedicalRecord {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    private Patients patient;
+    private Patient patient;
 
     private String title;
 

@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Setter
 @Getter
 @Entity
-public class Patients
+public class Doctor
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -18,9 +16,8 @@ public class Patients
     @Column(name = "full_name")
     String fullName;
 
-    @Column(name = "birth_date")
-    LocalDateTime birthDate;
+    @Column(name = "specialization")
+    String specialization;
 
-    public Patients() {}
-
+    public Doctor() {}
 }
