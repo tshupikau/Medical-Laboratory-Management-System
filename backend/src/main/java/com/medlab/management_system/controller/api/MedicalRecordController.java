@@ -23,7 +23,7 @@ public class MedicalRecordController {
     @GetMapping("/{patientId}/records")
     public List<MedicalRecord> getAllPatientRecords(@PathVariable Long patientId) {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));;
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
         return medicalRecordRepository.findByPatient(patient);
     }
 
