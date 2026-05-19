@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PatientController {
     private final PatientRepository patientRepository;
 
@@ -41,6 +42,7 @@ public class PatientController {
 
         patient.setBirthDate(newPatientData.getBirthDate() != null ?
                 newPatientData.getBirthDate() : patient.getBirthDate());
+        patient.setAge();
         patientRepository.save(patient);
     }
 

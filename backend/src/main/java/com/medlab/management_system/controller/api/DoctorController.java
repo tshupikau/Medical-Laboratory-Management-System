@@ -3,6 +3,7 @@ package com.medlab.management_system.controller.api;
 import com.medlab.management_system.model.entity.Doctor;
 import com.medlab.management_system.model.entity.Patient;
 import com.medlab.management_system.repository.DoctorRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctors")
+@CrossOrigin(origins = "http://localhost:5173")
 public class DoctorController {
     private final DoctorRepository doctorRepository;
 

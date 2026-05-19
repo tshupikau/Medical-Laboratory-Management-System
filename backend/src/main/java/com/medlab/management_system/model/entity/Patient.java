@@ -1,5 +1,6 @@
 package com.medlab.management_system.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,27 @@ public class Patient {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @JsonProperty("fullName")
     @Column(name = "full_name")
-    String fullName;
+    private String fullName;
 
+    @JsonProperty("age")
+    @Column(name = "age")
+    private Integer age;
+
+    @JsonProperty("birthDate")
     @Column(name = "birth_date")
-    LocalDate birthDate;
+    private LocalDate birthDate;
+
+    @JsonProperty("phoneNumber")
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @JsonProperty("gender")
+    @Column(name = "gender")
+    private String gender;
 
     public Patient() {}
+
 
 }

@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController {
     @GetMapping("/")
     public String home() {
-        return "<h1>Hello wgdalddsdd</h1>";
+        return "<h1>Hello world</h1>";
     }
 }
