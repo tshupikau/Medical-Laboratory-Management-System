@@ -1,8 +1,10 @@
 package com.medlab.management_system.controller.api;
 
-import com.medlab.management_system.model.entity.Patient;
-import com.medlab.management_system.repository.PatientRepository;
+import com.medlab.management_system.model.dto.patient.PatientCreateDto;
+import com.medlab.management_system.model.dto.patient.PatientResponseDto;
+import com.medlab.management_system.model.dto.patient.PatientUpdateDto;
 import org.springframework.web.bind.annotation.*;
+import com.medlab.management_system.service.PatientService;
 
 import java.util.List;
 
@@ -10,44 +12,39 @@ import java.util.List;
 @RequestMapping("/api/patients")
 @CrossOrigin(origins = "http://localhost:5173")
 public class PatientController {
-    private final PatientRepository patientRepository;
 
-    public PatientController(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
+    private final PatientService patientService;
+
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
     }
 
     @GetMapping
-    public List<Patient> getAll() {
-        return patientRepository.findAll();
+    public List<PatientResponseDto> getAll() {
+        return patientService.getAllPatients();
     }
 
     @GetMapping("/{id}")
-    public Patient getPatientById(@PathVariable Long id) {
-        return patientRepository.findById(id).orElse(null);
+    public PatientResponseDto getPatientById(@PathVariable Long id) {
+        return patientService.getPatientById(id);
     }
 
     @PostMapping("/add")
-    public Patient create(@RequestBody Patient patient) {
-        return patientRepository.save(patient);
+    public PatientResponseDto create(@RequestBody PatientCreateDto patientCreateDto) {
+        return patientService.createPatient(patientCreateDto);
     }
 
     @PutMapping("/update/{id}")
-    public void updatePatientById(@PathVariable Long id, @RequestBody Patient newPatientData) {
-        Patient patient = patientRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Patient not found with id: " + id)
-        );
-        //TODO
-        patient.setFullName(newPatientData.getFullName() != null ?
-                newPatientData.getFullName() : patient.getFullName());
-
-        patient.setBirthDate(newPatientData.getBirthDate() != null ?
-                newPatientData.getBirthDate() : patient.getBirthDate());
-        patient.setAge();
-        patientRepository.save(patient);
+    public void updatePatientById(
+            @PathVariable Long id,
+            @RequestBody PatientUpdateDto patientUpdateDto
+    ) {
+        patientService.updatePatient(id, patientUpdateDto);
     }
 
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) {
-        patientRepository.deleteById(id);
+        patientService.deletePatient(id);
     }
+
 }

@@ -1,50 +1,49 @@
 package com.medlab.management_system.controller.api;
 
-import com.medlab.management_system.model.entity.MedicalRecord;
-import com.medlab.management_system.model.entity.Patient;
-import com.medlab.management_system.repository.MedicalRecordRepository;
-import com.medlab.management_system.repository.PatientRepository;
+import com.medlab.management_system.model.dto.medicalRecord.MedicalRecordCreateDto;
+import com.medlab.management_system.model.dto.medicalRecord.MedicalRecordResponseDto;
+import com.medlab.management_system.model.dto.medicalRecord.MedicalRecordUpdateDto;
+import com.medlab.management_system.service.MedicalRecordService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/patients")
+@RequestMapping("/api/records")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MedicalRecordController {
-    private final MedicalRecordRepository medicalRecordRepository;
-    private final PatientRepository patientRepository;
 
-    public MedicalRecordController(MedicalRecordRepository medicalRecordRepository,
-                                   PatientRepository patientRepository) {
-        this.medicalRecordRepository = medicalRecordRepository;
-        this.patientRepository = patientRepository;
+    private final MedicalRecordService medicalRecordService;
+
+    public MedicalRecordController(MedicalRecordService medicalRecordService) {
+        this.medicalRecordService = medicalRecordService;
     }
 
-    @GetMapping("/{patientId}/records")
-    public List<MedicalRecord> getAllPatientRecords(@PathVariable Long patientId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
-        return medicalRecordRepository.findByPatient(patient);
+    @GetMapping
+    public List<MedicalRecordResponseDto> getAll() {
+        return medicalRecordService.getAllRecords();
     }
 
-    @GetMapping("/{patientId}/records/{recordId}")
-    public MedicalRecord getPatientRecordById(@PathVariable Long patientId, @PathVariable Long recordId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
-
-        return medicalRecordRepository.findByIdAndPatientId(recordId, patientId);
+    @GetMapping("/{id}")
+    public MedicalRecordResponseDto getById(@PathVariable Long id) {
+        return medicalRecordService.getRecordDtoById(id);
     }
 
-    @PostMapping("/{patientId}/records/add")
-    public MedicalRecord createPatientRecord(@RequestBody MedicalRecord record, @PathVariable Long patientId) {
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
-        record.setPatient(patient);
-        return medicalRecordRepository.save(record);
+    @PostMapping("/add")
+    public MedicalRecordResponseDto create(@RequestBody MedicalRecordCreateDto dto) {
+        return medicalRecordService.createRecord(dto);
     }
 
-    @DeleteMapping("/{patientId}/records/delete/{recordId}")
-    public void deletePatientRecord(@PathVariable Long patientId, @PathVariable Long recordId) {
-        medicalRecordRepository.deleteByIdAndPatientId(recordId, patientId);
+    @PutMapping("/update/{id}")
+    public void updateById(
+            @PathVariable Long id,
+            @RequestBody MedicalRecordUpdateDto dto
+    ) {
+        medicalRecordService.updateRecord(id, dto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable Long id) {
+        medicalRecordService.deleteRecord(id);
     }
 }

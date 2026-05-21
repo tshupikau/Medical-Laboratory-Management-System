@@ -19,5 +19,8 @@ public class Doctor
     @Column(name = "specialization")
     String specialization;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     public Doctor() {}
 }
